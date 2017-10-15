@@ -1,0 +1,40 @@
+body {
+	width:100%;
+	height:100%;
+	background:url(../photo/bj.bmp);
+}
+/* a标签添加动态效果 */
+a:hover {
+	background:#CCFF66; /* 背景色变化*/
+	color:#FF0066; /* 字体颜色变化*/
+}
+.box {
+	width:800px;
+	height:600px;
+	margin:100px auto;
+	text-align:center;
+}
+.btn {
+	text-decoration:none; /* 去下划线 */
+	display:block; /* 转成块才可以设置长、高... */
+	height:40px; /* 按钮高度 */
+	line-height:40px;
+	border: 1px solid #000000;
+	background:#FFFFFF;
+	padding: 0 10px;
+	margin-right:50px;
+	color:#000;
+}
+.loading {
+	position:fixed; /* 绝对定位，继承html body的宽高 */
+	top:0; /* 距离顶部的距离 */
+	left:0; /* 距离左边的距离 */
+	width:100%;
+	height:100%;
+	background:#CCFF66;
+	text-align:center; /* 让文字居中显示 */
+	font-size:30px; /* 文字的大小 */
+}
+.progress {
+	margin-top:300px; /* 文字距离顶部的距离 */
+}

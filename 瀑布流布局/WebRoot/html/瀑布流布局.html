@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>瀑布流布局</title>
+<!-- <link type="text/css" rel="stylesheet" href="../css/style.css"> -->
+<style type="text/css">
+	body {
+		background: #ffffff;
+	}
+	* {
+		padding: 0px;
+		margin: 0px;
+	}
+	#main {
+		position:relative;
+	}
+	.box {
+		padding: 10px;
+		float: left;
+	}
+	.pic {
+		padding: 7px;
+		border: 2px solid #123456;
+		border-radius: 5px; 
+		box-shadow: 5px 5px 5px;
+		background: #123456;
+	}
+	.pic img {
+		width: 170px;
+		height: aotu;
+	}
+
+
+
+</style>
+<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		var dataIn = {"data":[
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892365605&di=20d95365119c5f0e8d68e6b95a624884&imgtype=0&src=http%3A%2F%2Fpic12.nipic.com%2F20101222%2F3680557_133938075178_2.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892395735&di=80f572bfd0cd7da1701d7a5b47ef6d28&imgtype=0&src=http%3A%2F%2Fpic36.nipic.com%2F20131130%2F13143787_102856320000_2.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892430305&di=5c5592059dfe458d50c9539cd92bd83e&imgtype=0&src=http%3A%2F%2Fpic.ffpic.com%2Ffiles%2F2013%2F1127%2F1126pxhlmgiphone5sbz6.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892430305&di=5df8dec5c66ae56ec6f0896aca79389d&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201406%2F05%2F20140605214217_vtBTk.thumb.700_0.jpeg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892466224&di=2115853da5589674a7b48b41ad79801e&imgtype=0&src=http%3A%2F%2F2t.5068.com%2Fuploads%2Fallimg%2F151111%2F48-1511110T039.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892570316&di=e420b0d412e6222b0b8d4fd73fa15c39&imgtype=0&src=http%3A%2F%2Fimg.25pp.com%2Fuploadfile%2Fbizhi%2Fiphone3%2F20151125%2F1448414071497662.jpeg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892570311&di=307ce6dd4e340bdda5366c6a4dd26bd6&imgtype=0&src=http%3A%2F%2Fimg5q.duitang.com%2Fuploads%2Fitem%2F201503%2F17%2F20150317130803_CWFGM.jpeg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892570310&di=a7f40678de3c0aff4a5699aa928804d0&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201409%2F02%2F20140902160915_nCRiv.jpeg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892738720&di=034de396f225a1fcbf081a9098633031&imgtype=jpg&src=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D4246802120%2C496444090%26fm%3D214%26gp%3D0.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892738002&di=15b4837a8dd9cfb7593bed7330d52675&imgtype=0&src=http%3A%2F%2Fcdn.duitang.com%2Fuploads%2Fitem%2F201408%2F15%2F20140815104407_ewQ8e.thumb.700_0.png"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892800549&di=89b0328d19996886f91592e564ae44aa&imgtype=0&src=http%3A%2F%2Ff1.diyitui.com%2F37%2F6f%2Fe3%2F9f%2Fed%2F4c%2F73%2Fa1%2F09%2F8b%2F2d%2F04%2F8c%2F1d%2Fef%2Fdd.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892800547&di=f36d6ca17e805147e6c2db44c1c4261b&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0197b457625d600000018c1ba9a572.gif"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892841555&di=874dbb7bd935fe37095e45e5b50f1dca&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01b3805542a1360000019ae97e6650.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493487655&di=6162f11316d766d4955f30e5a041ff94&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F050484554a68cf00000115a86f9c48.jpg"},
+		                    {"src":"https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1492882424&di=a6ab8fa3f3994318ec59b987fe4e16ad&src=http://www.pp3.cn/uploads/201607/20160712011.jpg"},
+		                    {"src":"http://s1.dwstatic.com/group1/M00/D4/EA/69b08c7cafd6caff76e5787ee1856c50.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492893270058&di=ad96213602308ff98cb3653504628811&imgtype=0&src=http%3A%2F%2Fd.5857.com%2Fxgmn_150416%2Fdesk_007.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492893342432&di=9fc764020d0722cbf5961d0d13c9a99e&imgtype=0&src=http%3A%2F%2Fpic.dbw.cn%2F0%2F08%2F85%2F91%2F8859118_879718.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492893342431&di=1a674ca601931ff78d46827e2ce1b557&imgtype=0&src=http%3A%2F%2Fimg001.21cnimg.com%2Fphotos%2Falbum%2F20140714%2Fm320%2FA5F8619AABA66E72501F164E7398E729.jpeg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492893342429&di=570b9bd7af10e3b5b123351077671822&imgtype=0&src=http%3A%2F%2Fpic.anhuinews.com%2F0%2F03%2F66%2F40%2F3664031_611456.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892492793&di=386af1dad3dce88674eb104911078e3d&imgtype=0&src=http%3A%2F%2Fb.zol-img.com.cn%2Fsjbizhi%2Fimages%2F5%2F320x510%2F1372151913720.jpg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892570060&di=5defdd8049315a756c722cc125b3e6a6&imgtype=0&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fitem%2F201308%2F25%2F20130825154539_HEeRN.thumb.600_0.jpeg"},
+		                    {"src":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492892570317&di=d85dbd0906c6b1c1cfdb21fcb373ab0b&imgtype=0&src=http%3A%2F%2Fimg1.dongqiudi.com%2Ffastdfs%2FM00%2F05%2F85%2FooYBAFfVXE2AMWKVAAgxTLFLQCM59.jpeg"}]}
+		
+		var falg = 0;
+		// 滚动条拖动事件
+		window.onscroll = function() {
+			if (checkScrollSlide()){
+				var oParent = document.getElementById('main');
+				
+				console.log(falg);
+				if (falg != dataIn.data.length-1) {
+					for (var i = 0; i<dataIn.data.length; i ++) {
+						var oBox = document.createElement('div');
+						oBox.className = 'box';
+						var oPic = document.createElement('div');
+						oPic.className = 'pic';
+						var oImg = document.createElement('img');
+						oImg.src = dataIn.data[i].src;
+						oPic.appendChild(oImg);
+						oBox.appendChild(oPic);
+						oParent.appendChild(oBox);
+						falg = i;
+					};
+				}
+				waterFull('main','box');
+			};
+		}
+	}
+	
+	function waterFull(main,box){
+		// 取得mian元素
+		var oParent = document.getElementById(main);
+		
+		// 取出mian下所有class为box的元素
+		var boxArr = getByClass(oParent,box);
+		
+		// 获取class为box的元素的宽度
+		// 瀑布流的一条原则是等宽不等高
+		var boxWidth = boxArr[0].offsetWidth;
+		
+		// 取整
+		var boxCols = Math.floor(document.documentElement.clientWidth/boxWidth);
+		
+		// 设置main的宽度，并且居中
+		oParent.style.cssText = 'width:' + boxWidth*boxCols + 'px; margin: 0 auto';
+		
+		// 存储一行中所有图片的高
+		var hArr = [];
+		
+		// 遍历class为box的元素的集合
+		for (var j = 0; j < boxArr.length;j ++) {
+			
+			// 第一行图片
+			if (j < boxCols) {
+				hArr.push(boxArr[j].offsetHeight);
+				
+			} else {
+				// 求数组中的最小值
+				var hMin = Math.min.apply(null,hArr);
+				
+				// 数组中最小值的索引
+				var minIndex = getMinIndex(hArr, hMin);
+				boxArr[j].style.position = "absolute";
+				boxArr[j].style.top = hMin + 'px';
+				boxArr[j].style.left = minIndex*boxWidth + 'px';
+				hArr[minIndex]=hArr[minIndex] + boxArr[j].offsetHeight;
+			}
+		}
+	}
+	
+	// 取得父元素下所有class为box的元素
+	function getByClass(oParent,box) {
+		var boxArr = new Array();
+		var oElements = oParent.getElementsByTagName('*');
+		for (var i = 0; i < oElements.length; i ++) {
+			if (oElements[i].className == box){
+				boxArr.push(oElements[i]);
+			}
+		}
+		return boxArr;
+	}
+	
+	// 查找数组中高度最小的数的索引
+	function getMinIndex(arr, val) {
+		for (var i = 0; i < arr.length; i ++) {
+			if (arr[i] == val) {
+				return i;
+			}
+		}
+	}
+	
+	function checkScrollSlide(){
+		var oParent = document.getElementById('main');
+		var boxs = getByClass(oParent,'box');
+		// 最后一个box
+		var box = boxs[boxs.length-1]
+		// 最后一个box的中间到第一个box顶端的距离
+		var lastBoxH = box.offsetTop + Math.floor(box.offsetHeight/2);
+		// 滚动条拖动的距离
+		var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+		var height = document.body.clientHeight || document.documentElement.clientHeight + scrollTop; 
+		return (lastBoxH<height?true:false);
+	}
+</script>
+</head>
+<body>
+	<div id="main">
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\20.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\11.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\2.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\3.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\13.jpeg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\5.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\6.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\7.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\8.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\24.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\10.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\1.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\12.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\4.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\14.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\15.jpeg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\16.jpeg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\17.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\18.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\26.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\0.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\21.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\22.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\23.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\9.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\25.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="C:\Users\songdancer\Desktop\ima\19.jpg">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

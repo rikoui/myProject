@@ -1,0 +1,55 @@
+/* 去掉下面标签的内外边距*/
+body, p, ul, li {
+	padding:0;
+	margin:0;
+}
+a {
+	text-decoration:none;/* 去掉a标签的下划线 */
+	outline:none;/* 取消a标签点击时的虚线 */
+}
+body {
+	background:#eee;/* 设置body的背景色 */
+}
+.box {
+	margin:150px 0 0 200px;/* 调整box盒子的位置 */
+}
+#face-btn {
+	display:block;/* 让a标签变成块，以便设置宽高 */
+	text-indent:32px;/* 左右偏移（紧凑） */
+	background:url(../button/3.png) no-repeat 1px 1px;/* no-repeat:表情只显示一次 */
+	color:#333;
+	line-height:28px;
+}
+/* 鼠标移动到a标签上时按钮改变 */
+#face-btn:hover {
+	background:url(../button/4.png) no-repeat 1px 1px;
+}
+.panel {
+	display:none;/* 隐藏表情显示区域 */
+	width:620px;/* 设置表情区域的宽，高度自适应 */
+	border:1px solid #ccc;/* 设置边框 */
+	padding:2px;/* 设置内边距 */
+	background-color:#fff;/* 设置背景色 */
+}
+.loading {
+	text-align:center;
+}
+/* 去掉ul li前面的项目符号 */
+ul li {
+	list-style-type:none;
+}
+.list li {
+	display:inline-block;/* 让li标签在一行显示 */
+	width:50px;/* li标签的宽度 */
+	height:50px;/* li标签的高度 */
+	border:1px solid #fff;/* 设置边框 */
+	margin:5px;/* 设置距离上、右、下、左边的距离 */
+	cursor:pointer;/* 鼠标移动上去时显示‘小手’ */
+}
+.list li:hover {
+	border-color:#06c;/* 设置边框的颜色 */
+}
+/* 表情缩放 */
+li img {
+	width:50px;
+}

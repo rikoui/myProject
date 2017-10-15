@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<title>图片预加载之无序加载</title>
+		<meta charset="UTF-8">
+		<meta name="keywords" content=""></meta>
+		<meta name="description"></meta>
+		<style type="text/css">
+			html body {
+				width:100%;
+				height:100%;
+			}
+			/* a标签添加动态效果 */
+			a:hover {
+				background:#CCFF66; /* 背景色变化*/
+				color:#FF0066; /* 字体颜色变化*/
+			}
+			.box {
+				width:800px;
+				height:600px;
+				margin:100px auto;
+				text-align:center;
+			}
+			.btn {
+				text-decoration:none; /* 去下划线 */
+				display:block; /* 转成块才可以设置长、高... */
+				height:40px; /* 按钮高度 */
+				line-height:40px;
+				border: 1px solid #000000;
+				background:#FFFFFF;
+				padding: 0 10px;
+				margin-right:50px;
+				color:#000;
+			}
+			.loading {
+				position:fixed; /* 绝对定位，继承html body的宽高 */
+				top:0; /* 距离顶部的距离 */
+				left:0; /* 距离左边的距离 */
+				width:100%;
+				height:100%;
+				background:#CCFF66;
+				text-align:center; /* 让文字居中显示 */
+				font-size:30px; /* 文字的大小 */
+			}
+			.progress {
+				margin-top:300px; /* 文字距离顶部的距离 */
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript">
+			window.onload = function () {
+				var imgs = [
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640412160&di=a7fd2f03d0e324a5f8bb328e7c15b4d6&imgtype=0&src=http%3A%2F%2Fwww.ah.xinhuanet.com%2F2014-08%2F26%2F1112235781_14090397032501n.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640412159&di=8b92d318e787f39cc3fc83e540aa8507&imgtype=0&src=http%3A%2F%2Fwww.igoodgame.com%2Fuploads%2Fallimg%2Fc130712%2F13I614152Z-262P.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640484967&di=18070131a87ff1c95f252bb09cf5c584&imgtype=0&src=http%3A%2F%2Fimg3.utuku.china.com%2Fuploadimg%2Fgame%2F20170103%2Fbe9447ac-be08-471b-8c59-4ee8a0b80fdc.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640491803&di=9674aa8575abfac650a36f03c6a59681&imgtype=jpg&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3908492065%2C3769703840%26fm%3D214%26gp%3D0.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640484966&di=b3160f7db0ec9ebada12c9fe589c421d&imgtype=0&src=http%3A%2F%2Fpic.jschina.com.cn%2F0%2F20%2F63%2F44%2F20634411_998594.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640526204&di=8c878edbf58d23a612654a0ab573ef8d&imgtype=0&src=http%3A%2F%2Fres.news.ifeng.com%2Fdci_2011%2F0727%2Fori_4e2fcb4055e7f.jpeg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640526204&di=6bfda7c88363b3f6f0f866b307900143&imgtype=0&src=http%3A%2F%2Fimg01.imgcdc.com%2Fgame%2Fzh_cn%2Fpicnews%2F11128819%2F20151224%2F21004149_201512241036163531120010.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640526204&di=96c3f4dc9fdad30b1f7a4de2daca6620&imgtype=0&src=http%3A%2F%2Fimages2.china.com%2Fgame%2Fzh_cn%2Fpicnews%2F11128819%2F20150317%2F19390708_2015031710562320671200.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640526203&di=7405937d05ce7d5972c6b0ac56e87c8b&imgtype=0&src=http%3A%2F%2Fs9.rr.itc.cn%2Fr%2FwapChange%2F20166_6_16%2Fa9wp760028546992855.jpg",
+						"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1863126075,3527259969&fm=27&gp=0.jpg",
+						"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505640582469&di=1fd7007766c2750fd17201825674aeb0&imgtype=0&src=http%3A%2F%2Fimg4.cache.netease.com%2Fphoto%2F0031%2F2014-09-20%2FA6IUJPEP3V8J0031.jpg"
+				];
+
+				$("#img").attr("src", imgs[0]);
+
+				var index = 0;
+				var len = imgs.length;
+				// 当前加载图片的数量
+				var count = 0;
+
+				$.each(imgs, function (i, img) {
+					// 生成Image对象
+					var imgObj = new Image();
+					// Image对象的图片加载事件
+					imgObj.onload = function () {
+						if (count >= len - 1) {
+							// 图片加载完成是隐藏遮罩层
+							$(".loading").hide();
+						}
+						// 给进度条赋值
+						$(".progress").html(Math.round((count + 1) / len * 100) + "%");
+						count++;
+					}
+					imgObj.onerror = function () {
+						if (count >= len - 1) {
+							// 图片加载完成是隐藏遮罩层
+							$(".loading").hide();
+						}
+						// 给进度条赋值
+						$(".progress").html(Math.round((count + 1) / len * 100) + "%");
+						count++;
+						console.log(count);
+					}
+					// 将图片地址赋值给Image对象
+					imgObj.src = img;
+				});
+
+				/**
+					data-*属性为自定义属性，可以通过标签.data对的属性的值
+					例如：<a href="#" class="btn" data-control="prve">
+					var value = $(".btn").data("control");value = "prve"
+				*/
+				// 上一页/下一页绑定点击事件
+				$(".btn").on("click", function(){
+					if ("prve" === $(this).data("control")) {
+						index = Math.max(0, --index);
+						$("#img").attr("src", imgs[index]);
+						$("#yeshu").text(index + 1);
+					} else {
+						index = Math.min(len - 1, ++index);
+						$("#img").attr("src", imgs[index]);
+						$("#yeshu").text(index + 1);
+					}
+				});
+				// 设置页数
+				$("#yeshu").text(index + 1);
+				$("#total").text(len);
+			}
+		</script>
+	</head>
+	<body>
+		<!--遮罩页 start-->
+		<div class="loading">
+			<p class="progress">0%</p>
+		</div>
+		<!--遮罩页 end-->
+		<div class="box">
+			<img src="" alt="图片" id="img" width="50%;"/><br>
+			<p>
+				<a href="#" class="btn" data-control="prve">上一页</a><a href="#" class="btn" data-control="next">下一页</a>
+				<h4 style="margin:auto">第[<span id="yeshu"></span>]张，共[<span id="total"></span>]张</h4>
+			</p>
+		</div>
+	</body>
+<html>
