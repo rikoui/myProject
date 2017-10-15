@@ -1,0 +1,17 @@
+server:
+  # 端口
+  port: 8082
+  # 路径前缀
+  context-path: /demo
+  
+# 自定义参数
+girlName: xiaohong
+girlAge: 18
+
+# 参数可以合并，如下.这种写法需要新建类，在类中引用，例如建立新类GirlProperties
+girl: 
+  name: B
+  age: 21
+
+# 配置文件中参数套用
+content: "girlName : ${girlName}, girlAge : ${girlAge}"
